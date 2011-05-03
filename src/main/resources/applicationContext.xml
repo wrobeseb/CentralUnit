@@ -82,5 +82,11 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound" value="pwr.tin.tip.sw.pd.cu.jms.model.Job, 
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobTask"/>
+	</bean>
+	
     <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
 </beans>
