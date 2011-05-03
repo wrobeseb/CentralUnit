@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+    	<constructor-arg>
+    		<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+		    	<constructor-arg value="failover:(${esb.msg.broker.url})?maxReconnectDelay=15000"/>
+		    </bean>
+    	</constructor-arg>
+    	<property name="sessionCacheSize" value="${jms.session.cache.size}"/>
+    </bean>
+    
+    <bean id="messageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref="jmsConnectionFactory"/>
+		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
+    	<property name="destinationName" value="esb.out.queue"/>
+    	<property name="messageListener">
+    		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+    			<constructor-arg>
+    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageListener">
+    					<!-- TODO -->
+    				</bean>
+    			</constructor-arg>
+    			<property name="defaultListenerMethod" value="receive"/>
+    			<property name="messageConverter"><null/></property>
+    		</bean>
+    	</property>
+    </bean>
+    
+    <bean id="defaultMessageSender" class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageSender">
+    	<property name="jmsTemplate">
+    		<bean class="org.springframework.jms.core.JmsTemplate">
+    			<constructor-arg ref="jmsConnectionFactory"/>
+    		</bean>
+    	</property>
+    	<property name="esbInQueue" value="${esb.in.queue}"/>
+    	<property name="cuReplayQueue" value="${cu.replay.queue}"/>
+    </bean>
+
+</beans>

@@ -11,7 +11,7 @@
     <context:property-placeholder location="classpath:cu.properties"/>
    
    	<context:annotation-config/>
-    <context:component-scan base-package="pwr.tin.tip.sw.pd.cu.db.service.impl, pwr.tin.tip.sw.pd.cu.db.dao.impl"/>
+    <context:component-scan base-package="pwr.tin.tip.sw.pd.cu"/>
 
   	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
     	<constructor-arg>
@@ -22,14 +22,31 @@
     	<property name="sessionCacheSize" value="${jms.session.cache.size}"/>
     </bean>
     
-    <bean id="messageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <bean id="esbMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
 		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
-    	<property name="destinationName" value="esb.out.queue"/>
+    	<property name="destinationName" value="${esb.replay.queue}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
     			<constructor-arg>
-    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageListener">
+    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.EsbMessageListener">
+    					<!-- TODO -->
+    				</bean>
+    			</constructor-arg>
+    			<property name="defaultListenerMethod" value="receive"/>
+    			<property name="messageConverter"><null/></property>
+    		</bean>
+    	</property>
+    </bean>
+    
+    <bean id="workflowMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref="jmsConnectionFactory"/>
+		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
+    	<property name="destinationName" value="${cu.in.queue}"/>
+    	<property name="messageListener">
+    		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+    			<constructor-arg>
+    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.WorkflowMessageListener">
     					<!-- TODO -->
     				</bean>
     			</constructor-arg>
@@ -47,6 +64,11 @@
     	</property>
     </bean>
 
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="${thread.pool.core.tasks}"/>
+		<property name="maxPoolSize" value="${thread.pool.max.tasks}"/>
+		<property name="queueCapacity" value="${thread.pool.queue.capacity}"/>
+	</bean>
 	
 	<bean id="messages" class="pwr.tin.tip.sw.pd.cu.core.Messages">
 		<property name="messageSource">
