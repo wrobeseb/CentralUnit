@@ -13,6 +13,26 @@
    	<context:annotation-config/>
     <context:component-scan base-package="pwr.tin.tip.sw.pd.cu"/>
 
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="jobPoolManagerTrigger"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jobPoolManagerTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="jobPoolManager"/>
+				<property name="targetMethod" value="checkIfQueueIsFull"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="startDelay" value="2000"/>
+		<property name="repeatInterval" value="1000"/>
+	</bean>
+
   	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
     	<constructor-arg>
     		<bean class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -45,10 +65,10 @@
     	<property name="destinationName" value="${cu.in.queue}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-    			<constructor-arg>
-    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.WorkflowMessageListener">
-    					<!-- TODO -->
-    				</bean>
+    			<constructor-arg ref="workflowMessageListener">
+    				<!--<bean class="pwr.tin.tip.sw.pd.cu.jms.core.WorkflowMessageListener">
+    					 TODO 
+    				</bean>-->
     			</constructor-arg>
     			<property name="defaultListenerMethod" value="receive"/>
     			<property name="messageConverter"><null/></property>
@@ -56,12 +76,8 @@
     	</property>
     </bean>
     
-    <bean id="defaultMessageSender" class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageSender">
-    	<property name="jmsTemplate">
-    		<bean class="org.springframework.jms.core.JmsTemplate">
-    			<constructor-arg ref="jmsConnectionFactory"/>
-    		</bean>
-    	</property>
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    	<constructor-arg ref="jmsConnectionFactory"/>
     </bean>
 
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -83,9 +99,11 @@
 		</property>
 	</bean>
 	
-	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-		<property name="classesToBeBound" value="pwr.tin.tip.sw.pd.cu.jms.model.Job, 
-												 pwr.tin.tip.sw.pd.cu.jms.model.JobTask"/>
+	<bean id="jaxb2marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound" value="pwr.tin.tip.sw.pd.cu.jms.model.Job,
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobTask,
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobReplay,
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobTaskReplay"/>
 	</bean>
 	
     <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->

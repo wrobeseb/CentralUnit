@@ -38,7 +38,7 @@ public class JobProcessor {
 			log.debug("Zadanie id: {} rozpoczête.", new Object[] { job.getId() });
 		}
 		catch(RejectedExecutionException reEx) {
-			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce oczekuj¹cych.");
+			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce oczekuj±cych.", new Object[] { job.getId() });
 			blockedJobsRepository.put(job);
 			jmsConnectionManager.stopConsumingMessagesFromWorkflow();
 		}

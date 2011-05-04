@@ -1,5 +1,7 @@
 package pwr.tin.tip.sw.pd.cu.jms.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -20,11 +22,12 @@ public class JobTask {
 	public JobTask() {}
 	
 	public JobTask(Integer id, Integer sessionId, String sourceFilePath,
-			String resultFilePath) {
+			String resultFilePath, Integer... next) {
 		this.id = id;
 		this.sessionId = sessionId;
 		this.sourceFilePath = sourceFilePath;
 		this.resultFilePath = resultFilePath;
+		this.next = new ArrayList<Integer>(Arrays.asList(next));
 	}
 	
 	@XmlElement(name="id")

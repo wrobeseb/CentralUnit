@@ -54,9 +54,9 @@ public class JAXB2MarshallerTest extends BaseTest {
 		job.setLast(end);
 		
 		List<JobTask> tasks = new ArrayList<JobTask>();
-		tasks.add(new JobTask(1, 1, "source/file/path", "result/file/path"));
-		tasks.add(new JobTask(2, 1, "source/file/path", "result/file/path"));
-		tasks.add(new JobTask(3, 1, "source/file/path", "result/file/path"));
+		tasks.add(new JobTask(1, 1, "source/file/path", "result/file/path",2,3));
+		tasks.add(new JobTask(2, 1, "source/file/path", "result/file/path",3));
+		tasks.add(new JobTask(3, 1, "source/file/path", "result/file/path",1));
 		
 		job.setTasks(tasks);
 		
@@ -73,7 +73,7 @@ public class JAXB2MarshallerTest extends BaseTest {
 	
 	@Test
 	public void unmarshallTest() throws XmlMappingException, DocumentException {
-		Object obj = marshaller.unmarshal(new DocumentSource(DocumentHelper.parseText(Themes.fiveBloksParallel)));
+		Object obj = marshaller.unmarshal(new DocumentSource(DocumentHelper.parseText(Themes.scenerioTemplate)));
 		assertNotNull(obj);
 	}
 }

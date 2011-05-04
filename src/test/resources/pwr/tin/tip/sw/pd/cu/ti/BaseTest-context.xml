@@ -8,6 +8,12 @@
 
 	   	<context:annotation-config/>
 
+		<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+			<property name="corePoolSize" value="${thread.pool.core.tasks}"/>
+			<property name="maxPoolSize" value="${thread.pool.max.tasks}"/>
+			<property name="queueCapacity" value="${thread.pool.queue.capacity}"/>
+		</bean>
+
 		<bean id="messages" class="pwr.tin.tip.sw.pd.cu.core.Messages">
 			<property name="messageSource">
 				<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

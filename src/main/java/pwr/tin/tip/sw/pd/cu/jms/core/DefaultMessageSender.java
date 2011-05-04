@@ -7,34 +7,31 @@ import javax.jms.TextMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Component;
 
 import pwr.tin.tip.sw.pd.cu.jms.model.JobReplay;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
 
+@Component(value="defaultMessageSender")
 public class DefaultMessageSender {
 
 	private final static Logger log = LoggerFactory.getLogger(DefaultMessageSender.class);
 	
+	@Autowired(required=true)
 	private JmsTemplate jmsTemplate;
 	
+	@Value("${esb.in.queue}") 
 	private String esbInQueue;
+	@Value("${cu.replay.queue}")
 	private String cuReplayQueue;
-	
-	public void setJmsTemplate(JmsTemplate jmsTemplate) {
-		this.jmsTemplate = jmsTemplate;
-	}
-	public void setEsbInQueue(String esbInQueue) {
-		this.esbInQueue = esbInQueue;
-	}
-	public void setCuReplayQueue(String cuReplayQueue) {
-		this.cuReplayQueue = cuReplayQueue;
-	}
 	
 	public void sendJobTask(String body) {
 		send(esbInQueue, getMessageFromBody(body));
-		log.debug("Wiadomoœæ wys³ana... {}", new Object[]{ body });
+		log.debug("Wiadomo¶æ wys³ana... {}", new Object[]{ body });
 	}
 	
 	public void sendJobReplay(String body) {
@@ -67,7 +64,7 @@ public class DefaultMessageSender {
 	private MessageCreator getMessageFromObject(Object obj) {
 		if (!(obj instanceof JobTask)) {
 			if (!(obj instanceof JobReplay)) {
-				log.warn("Wiadomoœæ nie zostanie wys³ana! Nie prawid³owy objekt, dopuszczalne JobTask, JobReplay");
+				log.warn("Wiadomo¶æ nie zostanie wys³ana! Nie prawid³owy objekt, dopuszczalne JobTask, JobReplay");
 			}
 		}
 		return getMessageFromBody(obj.toString());

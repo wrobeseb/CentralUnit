@@ -2,7 +2,6 @@ package pwr.tin.tip.sw.pd.cu.jms.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -68,7 +67,7 @@ public class Job {
 	}
 
 	@XmlElementWrapper(name="components")
-	@XmlAnyElement 
+	@XmlElement(name="algorithm") 
 	public List<JobTask> getTasks() {
 		return tasks;
 	}

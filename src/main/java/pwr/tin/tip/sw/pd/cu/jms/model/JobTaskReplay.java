@@ -2,17 +2,14 @@ package pwr.tin.tip.sw.pd.cu.jms.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
-@XmlRootElement(name="scenerioReplay")
-@XmlType(propOrder = {"id", "name", "description", "status", "errorMsg", "warningMsg"})
-public class JobReplay {
+@XmlRootElement(name="algorithmReplay")
+public class JobTaskReplay {
 
 	private Integer id;
-	private String name;
-	private String description;
+	private Integer sessionId;
 	private Status status;
 	private String errorMsg;
 	private String warningMsg;
@@ -25,20 +22,12 @@ public class JobReplay {
 		this.id = id;
 	}
 	
-	@XmlElement(name="name")
-	public String getName() {
-		return name;
+	@XmlElement(name="sessionId")	
+	public Integer getSessionId() {
+		return sessionId;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@XmlElement(name="description")
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setSessionId(Integer sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 	@XmlElement(name="status")
@@ -63,11 +52,5 @@ public class JobReplay {
 	}
 	public void setWarningMsg(String warningMsg) {
 		this.warningMsg = warningMsg;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
 	}
 }

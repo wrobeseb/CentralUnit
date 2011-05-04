@@ -25,10 +25,23 @@ public class JobPoolManager {
 	@Autowired(required=true)
 	private JobProcessor jobProcessor;
 
+	/**
+	 * Metoda wykorzystywana w procesie cyklicznego sprawdzania stanu kolejki blokuj±cej
+	 * 
+	 * Kiedy kolejka oczekuj±cych na uruchomienie siê przepe³ni, pobieranie komunikatów z ESB 
+	 * jest blokowane a komunikat który zosta³ zablokowany zostaje umieszczony w repozytorium 
+	 * komunikatów zablokowanych, gdzie bêdzie oczekiwaæ na zwolnienie siê miejsca. Scheduler 
+	 * poprzez  uruchomienie  cyklicznie co 1 sekunde sprawdza czy w repozytorium komunikatów 
+	 * zablokowanych  s±  jakie¶  wiadomo¶ci  a  kiedy  takie  istniej±  sprawdzi czy kolejka 
+	 * oczekuj±cych  zosta³a ju¿ opró¿niona, w przypadku zwolnienia miejsca komunikat zostaje 
+	 * zdjêty  z  repozytorium 	komuniktów 	zablokowanych  a  nastêpnie  przekazywany jest do 
+	 * uruchomienia.
+	 * 
+	 */
 	public void checkIfQueueIsFull() {
-		ThreadPoolExecutor executor = taskExecutor.getThreadPoolExecutor();
-		if (executor.getQueue().size() == 0) {
-			if (blockedJobsRepository.capacity() != 0) {
+		if (blockedJobsRepository.capacity() != 0) {
+			ThreadPoolExecutor executor = taskExecutor.getThreadPoolExecutor();
+			if (executor.getQueue().size() == 0) {
 				Job job;
 				while ((job = blockedJobsRepository.pull()) != null) {
 					if (executor.getQueue().size() == 0) {

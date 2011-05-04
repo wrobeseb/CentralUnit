@@ -13,14 +13,15 @@
     	<property name="sessionCacheSize" value="${jms.session.cache.size}"/>
     </bean>
     
-    <bean id="messageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+  
+    <bean id="esbMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
 		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
-    	<property name="destinationName" value="esb.out.queue"/>
+    	<property name="destinationName" value="${esb.replay.queue}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
     			<constructor-arg>
-    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageListener">
+    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.EsbMessageListener">
     					<!-- TODO -->
     				</bean>
     			</constructor-arg>
@@ -30,14 +31,24 @@
     	</property>
     </bean>
     
-    <bean id="defaultMessageSender" class="pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageSender">
-    	<property name="jmsTemplate">
-    		<bean class="org.springframework.jms.core.JmsTemplate">
-    			<constructor-arg ref="jmsConnectionFactory"/>
+    <bean id="workflowMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref="jmsConnectionFactory"/>
+		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
+    	<property name="destinationName" value="${cu.in.queue}"/>
+    	<property name="messageListener">
+    		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+    			<constructor-arg>
+    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.WorkflowMessageListener">
+    					<!-- TODO -->
+    				</bean>
+    			</constructor-arg>
+    			<property name="defaultListenerMethod" value="receive"/>
+    			<property name="messageConverter"><null/></property>
     		</bean>
     	</property>
-    	<property name="esbInQueue" value="${esb.in.queue}"/>
-    	<property name="cuReplayQueue" value="${cu.replay.queue}"/>
     </bean>
-
+    
+   	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+   		<constructor-arg ref="jmsConnectionFactory"/>
+   	</bean>
 </beans>

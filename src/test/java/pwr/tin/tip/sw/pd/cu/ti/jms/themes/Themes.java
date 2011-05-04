@@ -7,4 +7,43 @@ public class Themes {
 	public final static String esbOutWithWorning = "<algorithm><sessionId>1</sessionId><algorithmId>1</algorithmId><status>WARNING</status><warningDesc>Komunikat opisuj¹cy zdarzenie</warningDesc><startDate>2010-09-20 12:23:45</startDate><endDate>2010-09-20 12:23:46</endDate><time>1234</time></algorithm>";
 	public final static String esbOutWithErrors = "<algorithm><sessionId>1</sessionId><algorithmId>1</algorithmId><status>ERROR</status><errorDesc>Komunikat opisuj¹cy zdarzenie</errorDesc><startDate>2010-09-20 12:23:45</startDate><endDate>2010-09-20 12:23:46</endDate><time>1234</time></algorithm>";
 	public final static String fiveBloksParallel = "<scenerio><id>1</id><name>Przyk³ad_2</name><description>Przy³ad scenariusza z przypadkiem zrównoleglenia zadañ.</description><start><next>1</next></start><components><algorithm><id>1</id><sessionId>1</sessionId><next>2</next></algorithm><algorithm><id>2</id><sessionId>1</sessionId><next>3</next><next>4</next></algorithm><algorithm><id>3</id><sessionId>1</sessionId><next>5</next></algorithm><algorithm><id>4</id><sessionId>1</sessionId><next>5</next></algorithm><algorithm><id>5</id><sessionId>1</sessionId></algorithm></components><end><prev>5</prev></end></scenerio>";
+
+	public final static String scenerioTemplate = 	"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"+
+													"	<scenerio>"+ 
+													"	<id>1</id>"+ 
+													"	<name>Test</name>"+ 
+													"	<description>Test Desc</description>"+ 
+													"	<start>"+ 
+													"		<next>1</next>"+ 
+													"		<next>2</next>"+ 
+													"	</start>"+ 
+													"	<components>"+ 
+													"		<algorithm>"+ 
+													"			<id>1</id>"+ 
+													"			<sessionId>1</sessionId>"+ 
+													"			<sourceFilePath>source/file/path</sourceFilePath>"+ 
+													"			<resultFilePath>result/file/path</resultFilePath>"+ 
+													"			<next>2</next>"+ 
+													"			<next>3</next>"+ 
+													"		</algorithm>"+ 
+													"		<algorithm>"+ 
+													"			<id>2</id>"+ 
+													"			<sessionId>1</sessionId>"+ 
+													"			<sourceFilePath>source/file/path</sourceFilePath>"+ 
+													"			<resultFilePath>result/file/path</resultFilePath>"+ 
+													"			<next>3</next>"+ 
+													"		</algorithm>"+ 
+													"		<algorithm>"+ 
+													"			<id>3</id>"+ 
+													"			<sessionId>1</sessionId>"+ 
+													"			<sourceFilePath>source/file/path</sourceFilePath>"+ 
+													"			<resultFilePath>result/file/path</resultFilePath>"+ 
+													"			<next>1</next>"+ 
+													"		</algorithm>"+ 
+													"	</components>"+ 
+													"	<end>"+ 
+													"		<prev>1</prev>"+ 
+													"		<prev>2</prev>"+ 
+													"	</end>"+ 
+													"</scenerio>";
 }
