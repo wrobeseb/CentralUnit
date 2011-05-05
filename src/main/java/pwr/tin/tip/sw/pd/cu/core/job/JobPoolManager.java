@@ -2,6 +2,8 @@ package pwr.tin.tip.sw.pd.cu.core.job;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,8 @@ import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 
 @Component(value="jobPoolManager")
 public class JobPoolManager {
+	
+	private final static Logger log = LoggerFactory.getLogger(JobPoolManager.class);
 	
 	@Autowired(required=true)
 	private JMSConnectionManager jmsConnectionManager;
@@ -42,6 +46,7 @@ public class JobPoolManager {
 		if (blockedJobsRepository.capacity() != 0) {
 			ThreadPoolExecutor executor = taskExecutor.getThreadPoolExecutor();
 			if (executor.getQueue().size() == 0) {
+				log.info("Miejsce w kolejce oczekuj¹cych zosta³o zwolnione... rozpoczêcie uruchamiania zadañ zablokowanych.");
 				Job job;
 				while ((job = blockedJobsRepository.pull()) != null) {
 					if (executor.getQueue().size() == 0) {

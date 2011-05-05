@@ -14,6 +14,19 @@ public class JobTaskReplay {
 	private String errorMsg;
 	private String warningMsg;
 	
+	public JobTaskReplay() {}
+	
+	/**
+	 * Konstruktor na potrzeby testowania...
+	 * 
+	 * @param id identyfikator zadania
+	 * @param sessionId identyfikator sesji
+	 */
+	public JobTaskReplay(Integer id, Integer sessionId) {
+		this.id = id;
+		this.sessionId = sessionId;
+	}
+	
 	@XmlElement(name="id")
 	public Integer getId() {
 		return id;

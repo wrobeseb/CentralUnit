@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import pwr.tin.tip.sw.pd.cu.core.job.repo.BlockedJobsRepository;
 import pwr.tin.tip.sw.pd.cu.core.job.repo.JobRepository;
+import pwr.tin.tip.sw.pd.cu.core.job.repo.JobTaskReplaiesRepository;
+import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
+import pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageSender;
 import pwr.tin.tip.sw.pd.cu.jms.core.manager.JMSConnectionManager;
 import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 
@@ -30,15 +33,24 @@ public class JobProcessor {
 	@Autowired(required=true)
 	private ThreadPoolTaskExecutor taskExecutor;
 	
+	@Autowired(required=true)
+	private IScenerioService scenerioService;
+	
+	@Autowired(required=true)
+	private DefaultMessageSender defaultMessageSender;
+	
+	@Autowired(required=true)
+	private JobTaskReplaiesRepository jobTaskReplaiesRepository;
+	
 	public void launch(Job job) {
 		log.debug("Próba rozpoczêcia zadania id: {}.", new Object[] { job.getId() });
 		try {
-			taskExecutor.execute(new JobTask(/* TODO */));
+			taskExecutor.execute(new JobWorker(scenerioService, defaultMessageSender, jobTaskReplaiesRepository));
 			jobRepository.put(job);
 			log.debug("Zadanie id: {} rozpoczête.", new Object[] { job.getId() });
 		}
 		catch(RejectedExecutionException reEx) {
-			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce oczekuj±cych.", new Object[] { job.getId() });
+			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce zablokowanych.", new Object[] { job.getId() });
 			blockedJobsRepository.put(job);
 			jmsConnectionManager.stopConsumingMessagesFromWorkflow();
 		}

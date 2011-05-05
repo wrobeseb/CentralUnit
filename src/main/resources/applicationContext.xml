@@ -48,11 +48,7 @@
     	<property name="destinationName" value="${esb.replay.queue}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-    			<constructor-arg>
-    				<bean class="pwr.tin.tip.sw.pd.cu.jms.core.EsbMessageListener">
-    					<!-- TODO -->
-    				</bean>
-    			</constructor-arg>
+    			<constructor-arg ref="esbMessageListener"/>
     			<property name="defaultListenerMethod" value="receive"/>
     			<property name="messageConverter"><null/></property>
     		</bean>

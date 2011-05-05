@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="algorithm")
@@ -18,6 +19,8 @@ public class JobTask {
 	private String resultFilePath;
 	
 	private List<Integer> next;
+	
+	private JobTaskReplay jobTaskReplay;
 	
 	public JobTask() {}
 	
@@ -70,9 +73,40 @@ public class JobTask {
 		this.next = next;
 	}
 
+	@XmlTransient
+	public JobTaskReplay getJobTaskReplay() {
+		return jobTaskReplay;
+	}
+	public void setJobTaskReplay(JobTaskReplay jobTaskReplay) {
+		this.jobTaskReplay = jobTaskReplay;
+	}
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return super.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (!(obj instanceof JobTask)) { return false; }
+		if (this.id == null) {return false; }
+		
+		JobTask jobTask = (JobTask)obj;
+		
+		if (jobTask.getId() == null) { return false; }
+		
+		if (jobTask.getId() == this.id) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

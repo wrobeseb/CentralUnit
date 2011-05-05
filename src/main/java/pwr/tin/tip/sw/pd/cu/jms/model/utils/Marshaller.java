@@ -18,8 +18,6 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 
-import pwr.tin.tip.sw.pd.cu.ti.jms.themes.Themes;
-
 @Component(value="marshaller")
 public class Marshaller {
 	
@@ -50,7 +48,7 @@ public class Marshaller {
 	
 	public Object unmarshal(String body) throws UnMarshalException {
 		try {
-			return jaxb2marshaller.unmarshal(new DocumentSource(DocumentHelper.parseText(Themes.scenerioTemplate)));
+			return jaxb2marshaller.unmarshal(new DocumentSource(DocumentHelper.parseText(body)));
 		} 
 		catch (XmlMappingException e) {
 			throw new UnMarshalException(e);
