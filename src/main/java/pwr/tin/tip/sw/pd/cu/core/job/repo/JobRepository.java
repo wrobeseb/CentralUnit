@@ -24,4 +24,10 @@ public class JobRepository {
 			jobs.remove(job.getId());
 		}
 	}
+	
+	public Boolean hasJob(Integer id) {
+		synchronized (jobs) {
+			return jobs.containsKey(id);
+		}
+	}
 }

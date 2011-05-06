@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
 @XmlRootElement(name="algorithmReplay")
-public class JobTaskReplay {
+public class JobTaskResponse {
 
 	private Integer id;
 	private Integer sessionId;
@@ -14,7 +14,7 @@ public class JobTaskReplay {
 	private String errorMsg;
 	private String warningMsg;
 	
-	public JobTaskReplay() {}
+	public JobTaskResponse() {}
 	
 	/**
 	 * Konstruktor na potrzeby testowania...
@@ -22,7 +22,7 @@ public class JobTaskReplay {
 	 * @param id identyfikator zadania
 	 * @param sessionId identyfikator sesji
 	 */
-	public JobTaskReplay(Integer id, Integer sessionId) {
+	public JobTaskResponse(Integer id, Integer sessionId) {
 		this.id = id;
 		this.sessionId = sessionId;
 	}

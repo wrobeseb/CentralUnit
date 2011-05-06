@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import pwr.tin.tip.sw.pd.cu.core.job.repo.BlockedJobsRepository;
 import pwr.tin.tip.sw.pd.cu.core.job.repo.JobRepository;
-import pwr.tin.tip.sw.pd.cu.core.job.repo.JobTaskReplaiesRepository;
+import pwr.tin.tip.sw.pd.cu.core.job.repo.JobTaskResponseRepository;
 import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
 import pwr.tin.tip.sw.pd.cu.jms.core.DefaultMessageSender;
 import pwr.tin.tip.sw.pd.cu.jms.core.manager.JMSConnectionManager;
@@ -40,12 +40,12 @@ public class JobProcessor {
 	private DefaultMessageSender defaultMessageSender;
 	
 	@Autowired(required=true)
-	private JobTaskReplaiesRepository jobTaskReplaiesRepository;
+	private JobTaskResponseRepository jobTaskResponsRepository;
 	
 	public void launch(Job job) {
 		log.debug("Próba rozpoczêcia zadania id: {}.", new Object[] { job.getId() });
 		try {
-			taskExecutor.execute(new JobWorker(scenerioService, defaultMessageSender, jobTaskReplaiesRepository));
+			taskExecutor.execute(new JobWorker(job, scenerioService, defaultMessageSender, jobTaskResponsRepository));
 			jobRepository.put(job);
 			log.debug("Zadanie id: {} rozpoczête.", new Object[] { job.getId() });
 		}

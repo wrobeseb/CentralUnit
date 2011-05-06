@@ -13,7 +13,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
-import pwr.tin.tip.sw.pd.cu.jms.model.JobReplay;
+import pwr.tin.tip.sw.pd.cu.jms.model.JobResponse;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
 
 @Component(value="defaultMessageSender")
@@ -42,7 +42,7 @@ public class DefaultMessageSender {
 		send(esbInQueue, getMessageFromObject(jobTask));
 	}
 	
-	public void sendJobReplay(JobReplay jobReplay) {
+	public void sendJobReplay(JobResponse jobReplay) {
 		send(cuReplayQueue, getMessageFromObject(jobReplay));
 	}
 	
@@ -63,7 +63,7 @@ public class DefaultMessageSender {
 	
 	private MessageCreator getMessageFromObject(Object obj) {
 		if (!(obj instanceof JobTask)) {
-			if (!(obj instanceof JobReplay)) {
+			if (!(obj instanceof JobResponse)) {
 				log.warn("Wiadomo¶æ nie zostanie wys³ana! Nie prawid³owy objekt, dopuszczalne JobTask, JobReplay");
 			}
 		}

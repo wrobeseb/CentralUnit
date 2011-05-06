@@ -8,7 +8,7 @@ import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
 @XmlRootElement(name="scenerioReplay")
 @XmlType(propOrder = {"id", "name", "description", "status", "errorMsg", "warningMsg"})
-public class JobReplay {
+public class JobResponse {
 
 	private Integer id;
 	private String name;

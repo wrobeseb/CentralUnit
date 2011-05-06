@@ -1,7 +1,5 @@
 package pwr.tin.tip.sw.pd.cu.jms.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -19,18 +17,20 @@ public class JobTask {
 	private String resultFilePath;
 	
 	private List<Integer> next;
+	private List<Integer> prev;
 	
-	private JobTaskReplay jobTaskReplay;
+	private JobTaskResponse jobTaskResponse;
+	
+	private boolean sendedFlag = false;
 	
 	public JobTask() {}
 	
 	public JobTask(Integer id, Integer sessionId, String sourceFilePath,
-			String resultFilePath, Integer... next) {
+			String resultFilePath) {
 		this.id = id;
 		this.sessionId = sessionId;
 		this.sourceFilePath = sourceFilePath;
 		this.resultFilePath = resultFilePath;
-		this.next = new ArrayList<Integer>(Arrays.asList(next));
 	}
 	
 	@XmlElement(name="id")
@@ -73,12 +73,28 @@ public class JobTask {
 		this.next = next;
 	}
 
-	@XmlTransient
-	public JobTaskReplay getJobTaskReplay() {
-		return jobTaskReplay;
+	@XmlElement(name="prev", required=false)
+	public List<Integer> getPrev() {
+		return prev;
 	}
-	public void setJobTaskReplay(JobTaskReplay jobTaskReplay) {
-		this.jobTaskReplay = jobTaskReplay;
+	public void setPrev(List<Integer> prev) {
+		this.prev = prev;
+	}
+
+	@XmlTransient
+	public boolean isSendedFlag() {
+		return sendedFlag;
+	}
+	public void setSendedFlag(boolean sendedFlag) {
+		this.sendedFlag = sendedFlag;
+	}
+
+	@XmlTransient
+	public JobTaskResponse getJobTaskResponse() {
+		return jobTaskResponse;
+	}
+	public void setJobTaskResponse(JobTaskResponse jobTaskResponse) {
+		this.jobTaskResponse = jobTaskResponse;
 	}
 
 	@Override

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import pwr.tin.tip.sw.pd.cu.db.dao.IScenerioDao;
 import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
 import pwr.tin.tip.sw.pd.cu.jms.model.Job;
-import pwr.tin.tip.sw.pd.cu.jms.model.JobReplay;
+import pwr.tin.tip.sw.pd.cu.jms.model.JobResponse;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
-import pwr.tin.tip.sw.pd.cu.jms.model.JobTaskReplay;
+import pwr.tin.tip.sw.pd.cu.jms.model.JobTaskResponse;
 
 @Service(value="scenerioService")
 public class ScenerioServiceImpl implements IScenerioService {
@@ -38,7 +38,7 @@ public class ScenerioServiceImpl implements IScenerioService {
 	}
 
 	@Override
-	public void registarSendedJobReplay(JobReplay jobReplay) {
+	public void registarSendedJobReplay(JobResponse jobReplay) {
 		// TODO Auto-generated method stub
 	}
 
@@ -48,7 +48,7 @@ public class ScenerioServiceImpl implements IScenerioService {
 	}
 
 	@Override
-	public void registerJobTaskReplayArrival(JobTaskReplay jobTaskReplay) {
+	public void registerJobTaskReplayArrival(JobTaskResponse jobTaskReplay) {
 		// TODO Auto-generated method stub
 	}
 }
