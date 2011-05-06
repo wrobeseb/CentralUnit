@@ -31,11 +31,15 @@ public class JobWorker implements Runnable {
 	@Override
 	public void run() {
 		try {
+			scenerioService.registerStartedJob(job);
 			waitForResponses(startUpFirst()); // Rekurencyjnie przechodzi przez wszystkie zadania...
-		} 
-		catch (InterruptedException e) {
-			e.printStackTrace();
+			scenerioService.registerEndedJob(job);
 		}
+		catch (Exception e) {
+			log.error("Blad podczas procesowania scenariusza... id: " + job.getId(), e);
+			scenerioService.registerEndedJobWithErrors(job);
+		}
+		defaultMessageSender.sendJobResponse(job);
 	}
 	
 	private void waitForResponses(Integer waitCounter) throws InterruptedException {
@@ -48,7 +52,8 @@ public class JobWorker implements Runnable {
 	private void setProcessed(JobTaskResponse response) {
 		for (JobTask jobTask : job.getTasks()) {
 			if (response.getId().equals(jobTask.getId())) {
-				jobTask.setJobTaskResponse(response); break;
+				jobTask.setJobTaskResponse(response); 
+				break;
 			}
 		}
 	}

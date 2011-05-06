@@ -13,6 +13,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
+import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
+import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobResponse;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
 
@@ -24,26 +26,43 @@ public class DefaultMessageSender {
 	@Autowired(required=true)
 	private JmsTemplate jmsTemplate;
 	
+	@Autowired(required=true)
+	private IScenerioService scenerioService;
+	
 	@Value("${esb.in.queue}") 
 	private String esbInQueue;
 	@Value("${cu.replay.queue}")
 	private String cuReplayQueue;
 	
+	/**
+	 * Metoda wykorzystywana w testach
+	 * 
+	 * @param body tresc komunikatu
+	 */
 	public void sendJobTask(String body) {
 		send(esbInQueue, getMessageFromBody(body));
 		log.debug("Wiadomo¶æ wys³ana... {}", new Object[]{ body });
 	}
 	
+	/**
+	 * Metoda wykorzystywana w testach
+	 * 
+	 * @param body tresc komunikatu
+	 */
 	public void sendJobReplay(String body) {
 		send(cuReplayQueue, getMessageFromBody(body));
 	}
 	
 	public void sendJobTask(JobTask jobTask) {
+		log.debug("Wysy³anie zadania id: {} dla sesji: {}", new Object[]{jobTask.getId(), jobTask.getSessionId()});
 		send(esbInQueue, getMessageFromObject(jobTask));
+		scenerioService.registerSendedJobTask(jobTask);
 	}
 	
-	public void sendJobReplay(JobResponse jobReplay) {
-		send(cuReplayQueue, getMessageFromObject(jobReplay));
+	public void sendJobResponse(Job job) {
+		JobResponse response = new JobResponse(job);
+		send(cuReplayQueue, getMessageFromObject(response));
+		scenerioService.registarSendedJobReplay(response);
 	}
 	
 	private void send(String queue, MessageCreator messageCreator) {

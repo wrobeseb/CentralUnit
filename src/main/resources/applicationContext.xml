@@ -98,8 +98,8 @@
 	<bean id="jaxb2marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="classesToBeBound" value="pwr.tin.tip.sw.pd.cu.jms.model.Job,
 												 pwr.tin.tip.sw.pd.cu.jms.model.JobTask,
-												 pwr.tin.tip.sw.pd.cu.jms.model.JobReplay,
-												 pwr.tin.tip.sw.pd.cu.jms.model.JobTaskReplay"/>
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobResponse,
+												 pwr.tin.tip.sw.pd.cu.jms.model.JobTaskResponse"/>
 	</bean>
 	
     <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->

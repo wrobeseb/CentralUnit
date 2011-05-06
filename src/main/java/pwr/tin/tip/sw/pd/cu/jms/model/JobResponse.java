@@ -17,6 +17,33 @@ public class JobResponse {
 	private String errorMsg;
 	private String warningMsg;
 	
+	public JobResponse() {}
+	
+	public JobResponse(Job job) {
+		this.id = job.getId();
+		this.name = job.getName();
+		this.description = job.getDescription();
+		for (JobTask jobTask : job.getTasks()) {
+			if (jobTask.getJobTaskResponse() != null) {
+				if (jobTask.getJobTaskResponse().getStatus().equals(Status.ERROR)) {
+					this.status = Status.ERROR; this.errorMsg = "Wystapil blad!"; break;
+				}
+				else 
+					if (jobTask.getJobTaskResponse().getStatus().equals(Status.WARNING)) {
+						this.status = Status.WARNING; this.warningMsg = "Wystapilo ostrzezenie!"; break;
+					}
+					else {
+						if (this.status == null) {
+							this.status = Status.PROCESSED;
+						}
+					}
+			}
+			else {
+				this.status = Status.SEVERITY; this.errorMsg = "Wystapil blad powodujacy nie zakonczenie procesowania scenariusza...!"; break;
+			}
+		}
+	}
+	
 	@XmlElement(name="id")
 	public Integer getId() {
 		return id;

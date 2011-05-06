@@ -6,5 +6,6 @@ import javax.xml.bind.annotation.XmlEnum;
 public enum Status {
 	PROCESSED,
 	WARNING,
-	ERROR;
+	ERROR,
+	SEVERITY;
 }

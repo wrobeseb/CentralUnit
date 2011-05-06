@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="algorithm")
-@XmlType(propOrder = {"id", "sessionId", "sourceFilePath", "resultFilePath", "next"})
+@XmlType(propOrder = {"id", "sessionId", "sourceFilePath", "resultFilePath", "next", "prev"})
 public class JobTask {
 
 	private Integer id;
