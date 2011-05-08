@@ -17,6 +17,8 @@ import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
 import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobResponse;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
+import pwr.tin.tip.sw.pd.cu.jms.model.utils.MarshalException;
+import pwr.tin.tip.sw.pd.cu.jms.model.utils.Marshaller;
 
 @Component(value="defaultMessageSender")
 public class DefaultMessageSender {
@@ -28,6 +30,9 @@ public class DefaultMessageSender {
 	
 	@Autowired(required=true)
 	private IScenerioService scenerioService;
+	
+	@Autowired(required=true)
+	private Marshaller marshaller;
 	
 	@Value("${esb.in.queue}") 
 	private String esbInQueue;
@@ -86,6 +91,12 @@ public class DefaultMessageSender {
 				log.warn("Wiadomo¶æ nie zostanie wys³ana! Nie prawid³owy objekt, dopuszczalne JobTask, JobReplay");
 			}
 		}
-		return getMessageFromBody(obj.toString());
+		try {
+			return getMessageFromBody(marshaller.marshal(obj));
+		} 
+		catch (MarshalException e) {
+			log.error("Blad podczas mapowania objektu na xml", e);
+			return null;
+		}
 	}
 }

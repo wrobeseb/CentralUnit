@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
-@XmlRootElement(name="algorithmReplay")
+@XmlRootElement(name="algorithmResponse")
 public class JobTaskResponse {
 
 	private Integer id;
