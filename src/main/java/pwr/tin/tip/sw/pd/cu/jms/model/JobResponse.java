@@ -2,13 +2,14 @@ package pwr.tin.tip.sw.pd.cu.jms.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
 @XmlRootElement(name="scenerioReplay")
 @XmlType(propOrder = {"id", "name", "description", "status", "errorMsg", "warningMsg"})
-public class JobResponse {
+public class JobResponse implements IXmlUtil {
 
 	private Integer id;
 	private String name;
@@ -16,6 +17,8 @@ public class JobResponse {
 	private Status status;
 	private String errorMsg;
 	private String warningMsg;
+	
+	private String xml;
 	
 	public JobResponse() {}
 	
@@ -91,10 +94,18 @@ public class JobResponse {
 	public void setWarningMsg(String warningMsg) {
 		this.warningMsg = warningMsg;
 	}
+	
+	@XmlTransient
+	public String getXml() {
+		return xml;
+	}
+	@Override
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return this.xml;
 	}
 }

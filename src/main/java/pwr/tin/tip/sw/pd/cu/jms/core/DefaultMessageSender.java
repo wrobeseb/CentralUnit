@@ -60,13 +60,13 @@ public class DefaultMessageSender {
 	
 	public void sendJobTask(JobTask jobTask) {
 		log.debug("Wysy³anie zadania id: {} dla sesji: {}", new Object[]{jobTask.getId(), jobTask.getSessionId()});
-		send(esbInQueue, getMessageFromObject(jobTask));
+		send(esbInQueue, getMessageFromBody(getMessageFromJobTask(jobTask)));
 		scenerioService.registerSendedJobTask(jobTask);
 	}
 	
 	public void sendJobResponse(Job job) {
 		JobResponse response = new JobResponse(job);
-		send(cuReplayQueue, getMessageFromObject(response));
+		send(cuReplayQueue, getMessageFromBody(getMessageFromJobResponse(response)));
 		scenerioService.registarSendedJobReplay(response);
 	}
 	
@@ -85,17 +85,22 @@ public class DefaultMessageSender {
 		};
 	}
 	
-	private MessageCreator getMessageFromObject(Object obj) {
-		if (!(obj instanceof JobTask)) {
-			if (!(obj instanceof JobResponse)) {
-				log.warn("Wiadomo¶æ nie zostanie wys³ana! Nie prawid³owy objekt, dopuszczalne JobTask, JobReplay");
-			}
-		}
+	private String getMessageFromJobResponse(JobResponse jobResponse) {
 		try {
-			return getMessageFromBody(marshaller.marshal(obj));
-		} 
-		catch (MarshalException e) {
-			log.error("Blad podczas mapowania objektu na xml", e);
+			String message = marshaller.marshal(jobResponse);
+			jobResponse.setXml(message);
+			return message;
+		} catch (MarshalException e) {
+			return null;
+		}
+	}
+	
+	private String getMessageFromJobTask(JobTask jobTask) {
+		try {
+			String message = marshaller.marshal(jobTask);
+			jobTask.setXml(message);
+			return message;
+		} catch (MarshalException e) {
 			return null;
 		}
 	}

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="algorithm")
 @XmlType(propOrder = {"id", "sessionId", "sourceFilePath", "resultFilePath", "next", "prev"})
-public class JobTask {
+public class JobTask implements IXmlUtil {
 
 	private Integer id;
 	private Integer sessionId;
@@ -22,6 +22,8 @@ public class JobTask {
 	private JobTaskResponse jobTaskResponse;
 	
 	private boolean sendedFlag = false;
+	
+	private String xml;
 	
 	public JobTask() {}
 	
@@ -97,10 +99,18 @@ public class JobTask {
 		this.jobTaskResponse = jobTaskResponse;
 	}
 
+	@XmlTransient
+	public String getXml() {
+		return xml;
+	}
+	@Override
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return this.xml;
 	}
 
 	@Override

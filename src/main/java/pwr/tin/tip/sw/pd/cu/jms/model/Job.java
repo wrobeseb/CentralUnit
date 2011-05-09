@@ -5,11 +5,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="scenerio")
 @XmlType(propOrder = {"id", "name", "description", "first", "tasks", "last"})
-public class Job {
+public class Job implements IXmlUtil {
 
 	private Integer id;
 	private String name;
@@ -20,6 +21,8 @@ public class Job {
  	private List<Integer> last;
 
 	private List<JobTask> tasks;
+	
+	private String xml;
 	
 	@XmlElement(name="id")
 	public Integer getId() {
@@ -73,5 +76,19 @@ public class Job {
 	}
 	public void setTasks(List<JobTask> tasks) {
 		this.tasks = tasks;
+	}
+
+	@XmlTransient
+	public String getXml() {
+		return xml;
+	}
+	@Override
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
+
+	@Override
+	public String toString() {
+		return this.xml;
 	}
 }

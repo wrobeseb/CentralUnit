@@ -2,17 +2,20 @@ package pwr.tin.tip.sw.pd.cu.jms.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
 @XmlRootElement(name="algorithmResponse")
-public class JobTaskResponse {
+public class JobTaskResponse implements IXmlUtil {
 
 	private Integer id;
 	private Integer sessionId;
 	private Status status;
 	private String errorMsg;
 	private String warningMsg;
+	
+	private String xml;
 	
 	public JobTaskResponse() {}
 	
@@ -65,5 +68,19 @@ public class JobTaskResponse {
 	}
 	public void setWarningMsg(String warningMsg) {
 		this.warningMsg = warningMsg;
+	}
+
+	@XmlTransient
+	public String getXml() {
+		return xml;
+	}
+	@Override
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
+
+	@Override
+	public String toString() {
+		return this.xml;
 	}
 }
