@@ -46,6 +46,7 @@
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
 		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
     	<property name="destinationName" value="${esb.replay.queue}"/>
+    	<property name="messageSelector" value="${msg.selector}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
     			<constructor-arg ref="esbMessageListener"/>
@@ -59,13 +60,10 @@
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
 		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
     	<property name="destinationName" value="${cu.in.queue}"/>
+    	<property name="messageSelector" value="${msg.selector}"/>
     	<property name="messageListener">
     		<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-    			<constructor-arg ref="workflowMessageListener">
-    				<!--<bean class="pwr.tin.tip.sw.pd.cu.jms.core.WorkflowMessageListener">
-    					 TODO 
-    				</bean>-->
-    			</constructor-arg>
+    			<constructor-arg ref="workflowMessageListener"/>
     			<property name="defaultListenerMethod" value="receive"/>
     			<property name="messageConverter"><null/></property>
     		</bean>
