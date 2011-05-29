@@ -3,6 +3,8 @@ package pwr.tin.tip.sw.pd.cu.core;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import pwr.tin.tip.sw.pd.cu.ShutdownHook;
+
 public class Context {
 	private static Context _instance;
 	
@@ -18,7 +20,10 @@ public class Context {
 	}
 	
 	public static void initContext() {
-		Context.getInstance().setContext(new ClassPathXmlApplicationContext("classpath:applicationContext.xml"));
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+		Runtime.getRuntime().addShutdownHook(
+	                new Thread(new ShutdownHook(context)));
+		Context.getInstance().setContext(context);
 	}
 	
 	public ApplicationContext getContext() {

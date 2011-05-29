@@ -17,6 +17,7 @@
 		<property name="triggers">
 			<list>
 				<ref bean="jobPoolManagerTrigger"/>
+				<ref bean="pingTrigger"/>
 			</list>
 		</property>
 	</bean>
@@ -31,6 +32,18 @@
 		</property>
 		<property name="startDelay" value="2000"/>
 		<property name="repeatInterval" value="1000"/>
+	</bean>
+	
+	<bean id="pingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="unitService"/>
+				<property name="targetMethod" value="ping"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="10000"/>
 	</bean>
 
   	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -100,5 +113,37 @@
 												 pwr.tin.tip.sw.pd.cu.jms.model.JobTaskResponse"/>
 	</bean>
 	
-    <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql:pd"/>
+        <property name="username" value="cu"/>
+        <property name="password" value="cu_passwd"/>
+        <property name="defaultReadOnly" value="false"/>
+        <property name="maxActive" value="4"/>
+        <property name="maxOpenPreparedStatements" value="1"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+          <list>
+            <value>pwr.tin.tip.sw.pd.cu.db.model.DBJob</value>
+            <value>pwr.tin.tip.sw.pd.cu.db.model.DBJobTask</value>
+            <value>pwr.tin.tip.sw.pd.cu.db.model.DBUnit</value>
+          </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+            <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="txManager"/>
 </beans>

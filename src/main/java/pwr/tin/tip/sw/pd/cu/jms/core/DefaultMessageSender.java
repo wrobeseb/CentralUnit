@@ -39,6 +39,9 @@ public class DefaultMessageSender {
 	@Value("${cu.replay.queue}")
 	private String cuReplayQueue;
 	
+	@Value("${central.unit.id}")
+	private Integer cuId;
+	
 	/**
 	 * Metoda wykorzystywana w testach
 	 * 
@@ -80,6 +83,7 @@ public class DefaultMessageSender {
 			public Message createMessage(Session session) throws JMSException {
 				TextMessage message = session.createTextMessage();
 				message.setText(body);
+				message.setIntProperty("cuId", cuId);
 				return message;
 			}
 		};
