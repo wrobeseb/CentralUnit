@@ -17,7 +17,6 @@
 		<property name="triggers">
 			<list>
 				<ref bean="jobPoolManagerTrigger"/>
-				<ref bean="pingTrigger"/>
 			</list>
 		</property>
 	</bean>
@@ -32,18 +31,6 @@
 		</property>
 		<property name="startDelay" value="2000"/>
 		<property name="repeatInterval" value="1000"/>
-	</bean>
-	
-	<bean id="pingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail">
-			<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-				<property name="targetObject" ref="unitService"/>
-				<property name="targetMethod" value="ping"/>
-				<property name="concurrent" value="false"/>
-			</bean>
-		</property>
-		<property name="startDelay" value="10000"/>
-		<property name="repeatInterval" value="10000"/>
 	</bean>
 
   	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -114,13 +101,13 @@
 	</bean>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql:pd"/>
-        <property name="username" value="cu"/>
-        <property name="password" value="cu_passwd"/>
+        <property name="driverClassName" value="${jdbc.connetion.driver.class.name}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="defaultReadOnly" value="false"/>
-        <property name="maxActive" value="4"/>
-        <property name="maxOpenPreparedStatements" value="1"/>
+        <property name="maxActive" value="${jdbc.max.active.connection}"/>
+        <property name="maxOpenPreparedStatements" value="${jdbc.max.open.prepared.statements}"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -134,7 +121,7 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
             </props>
