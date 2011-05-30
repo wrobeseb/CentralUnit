@@ -1,7 +1,5 @@
 package pwr.tin.tip.sw.pd.cu.db.service.impl;
 
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -18,7 +16,7 @@ import pwr.tin.tip.sw.pd.cu.db.service.IUnitService;
 import pwr.tin.tip.sw.pd.cu.db.utils.AddressUtils;
 import pwr.tin.tip.sw.pd.cu.db.utils.DateTime;
 
-@Component(value="unitService")
+@Component("unitService")
 public class UnitServiceImpl implements IUnitService {
 
 	@Autowired(required=true)
@@ -32,6 +30,7 @@ public class UnitServiceImpl implements IUnitService {
 
 	@Override
 	@PostConstruct
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void registerUnit() {
 		DBUnit unit = new DBUnit();
 		unit.setIdUnit(unitId);
