@@ -28,7 +28,6 @@ public class DBJob {
 	public DBJob() {}
 	
 	public DBJob(Job job) {
-		// TODO
 	}
 	
 	@Id
