@@ -20,37 +20,59 @@ public class UnitDaoImpl extends HibernateDaoSupport implements IUnitDao {
 
 	@Override
 	public void save(Object obj) {
+<<<<<<< HEAD
 		//Transaction transaction = getSession().beginTransaction();
 		//getSession().save(obj);
 		DBUnit unit = (DBUnit)obj;
 		SQLQuery query = getSession().createSQLQuery("INSERT INTO unit (id, id_unit, address_ip, last_update_dt, max_process_no, overload_flg, type) VALUES (nextval ('unit_seq'),?,?,?,?,?,?)");
+=======
+		DBUnit unit = (DBUnit)obj;
+		SQLQuery query = getSession().createSQLQuery("INSERT INTO unit (id, id_unit, address_ip, last_update_dt, max_process_no, overload_flg, type, marked) VALUES (nextval ('unit_seq'), ?,?,?,?,?,?,?)");
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 		query.setInteger(0, unit.getIdUnit());
 		query.setString(1, unit.getAddressIp());
 		query.setDate(2, unit.getLastUpdateDt());
 		query.setInteger(3, unit.getMaxProcessNo());
 		query.setBoolean(4, unit.getOverloadFlg());
 		query.setInteger(5, unit.getType().ordinal());
+<<<<<<< HEAD
 		query.executeUpdate();
 		//transaction.commit();
+=======
+		query.setBoolean(6, unit.isMarked());
+		query.executeUpdate();
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 	}
 
 	@Override
 	public void setOverload(Integer id) {
+<<<<<<< HEAD
 		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET overload_flg = true WHERE id_unit = ? AND type = 1");
+=======
+		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET overload_flg = true WHERE id_unit = ? AND type = 0");
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 		query.setInteger(0, id);
 		query.executeUpdate();
 	}
 
 	@Override
 	public void setFree(Integer id) {
+<<<<<<< HEAD
 		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET overload_flg = false WHERE id_unit = ? AND type = 1");
+=======
+		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET overload_flg = false WHERE id_unit = ? AND type = 0");
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 		query.setInteger(0, id);
 		query.executeUpdate();
 	}
 
 	@Override
 	public void ping(Integer id) {
+<<<<<<< HEAD
 		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET last_update_dt = ? WHERE id_unit = ? AND type = 1");
+=======
+		SQLQuery query = getSession().createSQLQuery("UPDATE unit SET last_update_dt = ? WHERE id_unit = ? AND type = 0");
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 		query.setDate(0, DateTime.now());
 		query.setInteger(1, id);
 		query.executeUpdate();
@@ -58,7 +80,11 @@ public class UnitDaoImpl extends HibernateDaoSupport implements IUnitDao {
 
 	@Override
 	public void removeUnit(Integer id) {
+<<<<<<< HEAD
 		SQLQuery query = getSession().createSQLQuery("DELETE FROM unit WHERE id_unit = ? AND type = 1");
+=======
+		SQLQuery query = getSession().createSQLQuery("DELETE FROM unit WHERE id_unit = ? AND type = 0");
+>>>>>>> bb1b3f235ac98b377d9da03ec5630eb9ab70f86e
 		query.setInteger(0, id);
 		query.executeUpdate();
 	}

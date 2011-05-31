@@ -39,6 +39,7 @@ public class UnitServiceImpl implements IUnitService {
 		unit.setOverloadFlg(false);
 		unit.setType(UnitType.CU);
 		unit.setLastUpdateDt(DateTime.now());
+		unit.setMarked(false);
 		unitDao.save(unit);
 	}
 
