@@ -19,6 +19,7 @@ public class DBJob {
 
 	private Integer idJob;
 	private Integer cuId;
+	private Integer sessionId;
 	private Integer msgId;
 	private String  requestMsgBody;
 	private Date    requestMsgArrivalDt;
@@ -47,6 +48,14 @@ public class DBJob {
 	}
 	public void setCuId(Integer cuId) {
 		this.cuId = cuId;
+	}
+	
+	@Column(name="session_id")
+	public Integer getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Integer sessionId) {
+		this.sessionId = sessionId;
 	}
 
 	@Column(name="msg_id")

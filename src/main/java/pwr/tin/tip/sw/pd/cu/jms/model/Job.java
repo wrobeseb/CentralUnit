@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Job implements IXmlUtil {
 
 	private Integer id;
+	private Integer sessionId;
 	private String name;
 	private String description;
 	
@@ -32,6 +33,14 @@ public class Job implements IXmlUtil {
 		this.id = id;
 	}
 
+	@XmlElement(name="session_id")
+	public Integer getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Integer sessionId) {
+		this.sessionId = sessionId;
+	}
+	
 	@XmlElement(name="name") 
 	public String getName() {
 		return name;

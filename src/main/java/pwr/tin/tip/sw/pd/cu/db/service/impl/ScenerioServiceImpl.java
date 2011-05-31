@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pwr.tin.tip.sw.pd.cu.db.dao.IScenerioDao;
+import pwr.tin.tip.sw.pd.cu.db.model.DBJob;
 import pwr.tin.tip.sw.pd.cu.db.service.IScenerioService;
+import pwr.tin.tip.sw.pd.cu.db.service.IStatService;
 import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobResponse;
 import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
@@ -20,9 +22,14 @@ public class ScenerioServiceImpl implements IScenerioService {
 	@Autowired(required=true)
 	private IScenerioDao scenerioDao;
 	
+	@Autowired(required=true)
+	private IStatService statService;
+	
 	@Override
 	public void registerJobArrival(Job job) {
-		// TODO Zapisanie nadejscia wiadomosci zawierajacej scenariusz...
+		DBJob dbJob = new DBJob(job);
+		scenerioDao.save(dbJob);
+		statService.startStat(dbJob.getIdJob(), dbJob.getSessionId());
 		log.debug("Zdarzenie nadejscia wiadomosci zawierajacej scenariusz id: {} utrwalone w bd.", new Object[] {job.getId()});
 	}
 
