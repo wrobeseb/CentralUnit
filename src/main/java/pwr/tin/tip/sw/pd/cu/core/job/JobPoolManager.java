@@ -9,6 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import pwr.tin.tip.sw.pd.cu.core.job.repo.BlockedJobsRepository;
+import pwr.tin.tip.sw.pd.cu.db.service.IUnitService;
 import pwr.tin.tip.sw.pd.cu.jms.core.manager.JMSConnectionManager;
 import pwr.tin.tip.sw.pd.cu.jms.model.Job;
 

@@ -3,6 +3,7 @@ package pwr.tin.tip.sw.pd.cu.db.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import pwr.tin.tip.sw.pd.cu.db.dao.IScenerioDao;
@@ -25,10 +26,13 @@ public class ScenerioServiceImpl implements IScenerioService {
 	@Autowired(required=true)
 	private IStatService statService;
 	
+	@Value("${central.unit.id}")
+	private Integer cuId;
+	
 	@Override
 	public void registerJobArrival(Job job) {
 		DBJob dbJob = new DBJob(job);
-		scenerioDao.save(dbJob);
+		scenerioDao.save(job);
 		statService.startStat(dbJob.getIdJob(), dbJob.getSessionId());
 		log.debug("Zdarzenie nadejscia wiadomosci zawierajacej scenariusz id: {} utrwalone w bd.", new Object[] {job.getId()});
 	}

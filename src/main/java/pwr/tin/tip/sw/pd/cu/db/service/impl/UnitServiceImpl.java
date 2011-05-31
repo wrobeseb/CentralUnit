@@ -16,7 +16,7 @@ import pwr.tin.tip.sw.pd.cu.db.service.IUnitService;
 import pwr.tin.tip.sw.pd.cu.db.utils.AddressUtils;
 import pwr.tin.tip.sw.pd.cu.db.utils.DateTime;
 
-@Component(value="unitService")
+@Component("unitService")
 public class UnitServiceImpl implements IUnitService {
 
 	@Autowired(required=true)

@@ -20,6 +20,7 @@ public class UnitDaoImpl extends HibernateDaoSupport implements IUnitDao {
 
 	@Override
 	public void save(Object obj) {
+
 		DBUnit unit = (DBUnit)obj;
 		SQLQuery query = getSession().createSQLQuery("INSERT INTO unit (id, id_unit, address_ip, last_update_dt, max_process_no, overload_flg, type, marked) VALUES (nextval ('unit_seq'), ?,?,?,?,?,?,?)");
 		query.setInteger(0, unit.getIdUnit());
