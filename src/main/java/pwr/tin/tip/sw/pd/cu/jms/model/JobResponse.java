@@ -8,10 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 import pwr.tin.tip.sw.pd.cu.jms.model.enums.Status;
 
 @XmlRootElement(name="scenerioReplay")
-@XmlType(propOrder = {"id", "name", "description", "status", "errorMsg", "warningMsg"})
+@XmlType(propOrder = {"sessionId", "name", "description", "status", "errorMsg", "warningMsg"})
 public class JobResponse implements IXmlUtil {
 
 	private Integer id;
+	
+	private Integer sessionId;
 	private String name;
 	private String description;
 	private Status status;
@@ -24,6 +26,7 @@ public class JobResponse implements IXmlUtil {
 	
 	public JobResponse(Job job) {
 		this.id = job.getId();
+		this.sessionId = job.getSessionId();
 		this.name = job.getName();
 		this.description = job.getDescription();
 		for (JobTask jobTask : job.getTasks()) {
@@ -47,12 +50,21 @@ public class JobResponse implements IXmlUtil {
 		}
 	}
 	
-	@XmlElement(name="id")
+	
+	@XmlTransient
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@XmlElement(name="id")
+	public Integer getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(Integer id) {
+		this.sessionId = id;
 	}
 	
 	@XmlElement(name="name")

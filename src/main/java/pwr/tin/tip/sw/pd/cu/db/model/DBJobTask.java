@@ -1,5 +1,6 @@
 package pwr.tin.tip.sw.pd.cu.db.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,10 +19,9 @@ import pwr.tin.tip.sw.pd.cu.jms.model.JobTask;
 public class DBJobTask {
 
 	private Integer idJobTask;
-	private Integer jobId;
+	private Integer taskId;
 	private Integer sessionId;
 	private Integer cuId;
-	private Integer msgId;
 	private String  requestMsgBody;
 	private Date    requestMsgSentDt;
 	private String  responseMsgBody;
@@ -30,7 +30,11 @@ public class DBJobTask {
 	public DBJobTask() {}
 	
 	public DBJobTask(JobTask jobTask) {
-		// TODO
+		taskId = jobTask.getId();
+		sessionId = jobTask.getSessionId();
+		cuId = jobTask.getCuId();
+		requestMsgBody = jobTask.getXml();
+		requestMsgSentDt = Calendar.getInstance().getTime();
 	}
 
 	@Id
@@ -42,15 +46,16 @@ public class DBJobTask {
 	public void setIdJobTask(Integer idJobTask) {
 		this.idJobTask = idJobTask;
 	}
-
-	@Column(name="job_id")
-	public Integer getJobId() {
-		return jobId;
-	}
-	public void setJobId(Integer jobId) {
-		this.jobId = jobId;
-	}
 	
+	@Column(name="task_id")
+	public Integer getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Integer taskId) {
+		this.taskId = taskId;
+	}
+
 	@Column(name="session_id")
 	public Integer getSessionId() {
 		return sessionId;
@@ -65,14 +70,6 @@ public class DBJobTask {
 	}
 	public void setCuId(Integer cuId) {
 		this.cuId = cuId;
-	}
-
-	@Column(name="msg_id")
-	public Integer getMsgId() {
-		return msgId;
-	}
-	public void setMsgId(Integer msgId) {
-		this.msgId = msgId;
 	}
 
 	@Column(name="request_msg_body")

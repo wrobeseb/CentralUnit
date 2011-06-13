@@ -17,6 +17,7 @@ public class DBStatistics {
 	private Integer unitId;
 	private Integer sessionId;
 	private Integer jobId;
+	private Integer taskId;
 	private Long processStartMili;
 	private Long processEndMili;
 	private Long interval;

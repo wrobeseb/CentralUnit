@@ -10,7 +10,18 @@ public class DateTime {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			return sdf.parse(sdf.format(Calendar.getInstance().getTime()));
-		} 
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Long nowInMillis() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		try {
+			return sdf.parse(sdf.format(Calendar.getInstance().getTime())).getTime();
+		}
 		catch (ParseException e) {
 			e.printStackTrace();
 		}

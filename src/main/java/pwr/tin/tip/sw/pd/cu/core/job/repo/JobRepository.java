@@ -15,13 +15,13 @@ public class JobRepository {
 	
 	public void put(Job job) {
 		synchronized (jobs) {
-			jobs.put(job.getId(), job);
+			jobs.put(job.getSessionId(), job);
 		}
 	}
 	
 	public void delete(Job job) {
 		synchronized (jobs) {
-			jobs.remove(job.getId());
+			jobs.remove(job.getSessionId());
 		}
 	}
 	

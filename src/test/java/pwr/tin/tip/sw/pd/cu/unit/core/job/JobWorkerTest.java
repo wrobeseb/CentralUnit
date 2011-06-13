@@ -23,7 +23,7 @@ public class JobWorkerTest {
 	@Before
 	public void initJob() {
 		job = new Job();
-		job.setId(1);
+		job.setSessionId(1);
 		job.setFirst(new ArrayList<Integer>(Arrays.asList(1,2)));
 		job.setLast(new ArrayList<Integer>(Arrays.asList(5)));
 		
@@ -62,7 +62,7 @@ public class JobWorkerTest {
 	
 	private void waitForResponses(Integer waitCounter) throws InterruptedException {
 		for (int i = 0; i < waitCounter; i++) {
-			setProcessed(jobTaskResponseRepository.take(job.getId()));
+			setProcessed(jobTaskResponseRepository.take(job.getSessionId()));
 			waitForResponses(checkForDependencies());
 		}
 	}

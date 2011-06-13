@@ -36,7 +36,7 @@ public class JobWorker implements Runnable {
 			scenerioService.registerEndedJob(job);
 		}
 		catch (Exception e) {
-			log.error("Blad podczas procesowania scenariusza... id: " + job.getId(), e);
+			log.error("Blad podczas procesowania scenariusza... id: " + job.getSessionId(), e);
 			scenerioService.registerEndedJobWithErrors(job);
 		}
 		defaultMessageSender.sendJobResponse(job);
@@ -44,7 +44,7 @@ public class JobWorker implements Runnable {
 	
 	private void waitForResponses(Integer waitCounter) throws InterruptedException {
 		for (int i = 0; i < waitCounter; i++) {
-			setProcessed(jobTaskResponseRepository.take(job.getId()));
+			setProcessed(jobTaskResponseRepository.take(job.getSessionId()));
 			waitForResponses(checkForDependencies());
 		}
 	}
@@ -72,6 +72,7 @@ public class JobWorker implements Runnable {
 					}
 				}
 				if (flag) {
+					scenerioService.registerSendedJobTask(jobTask);
 					defaultMessageSender.sendJobTask(jobTask);
 					jobTask.setSendedFlag(true);
 					waitCounter++;

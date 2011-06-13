@@ -9,10 +9,12 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="scenerio")
-@XmlType(propOrder = {"id", "name", "description", "first", "tasks", "last"})
+@XmlType(propOrder = {"sessionId", "name", "description", "first", "tasks", "last"})
 public class Job implements IXmlUtil {
 
 	private Integer id;
+	
+	private Integer cuId;
 	private Integer sessionId;
 	private String name;
 	private String description;
@@ -25,15 +27,24 @@ public class Job implements IXmlUtil {
 	
 	private String xml;
 	
-	@XmlElement(name="id")
+	
+	@XmlTransient
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	@XmlElement(name="session_id")
+	
+	@XmlTransient
+	public Integer getCuId() {
+		return cuId;
+	}
+	public void setCuId(Integer cuId) {
+		this.cuId = cuId;
+	}
+	
+	@XmlElement(name="id")
 	public Integer getSessionId() {
 		return sessionId;
 	}

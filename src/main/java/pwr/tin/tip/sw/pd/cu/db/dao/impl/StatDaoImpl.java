@@ -18,14 +18,19 @@ public class StatDaoImpl extends HibernateDaoSupport implements IStatDao {
 		setSessionFactory(sessionFactory);
 	}
 	
+	public void save(Object obj) {
+		getSession().saveOrUpdate(obj);
+	}
+	
 	@Override
 	public void setStartStat(DBStatistics stat) {
-		SQLQuery query = getSession().createSQLQuery("INSERT INTO statistic (id, unit_id, session_id, job_id, process_start_mili) VALUES (nextval ('statistic_seq'), ?, ?, ?, ?)");
+		save(stat);
+		/*SQLQuery query = getSession().createSQLQuery("INSERT INTO statistic (id, unit_id, session_id, job_id, process_start_mili) VALUES (nextval ('statistic_seq'), ?, ?, ?, ?)");
 		query.setInteger(0, stat.getUnitId());
 		query.setInteger(1, stat.getSessionId());
 		query.setInteger(2, stat.getJobId());
 		query.setLong(3, stat.getProcessStartMili());
-		query.executeUpdate();
+		query.executeUpdate();*/
 	}
 
 	@Override

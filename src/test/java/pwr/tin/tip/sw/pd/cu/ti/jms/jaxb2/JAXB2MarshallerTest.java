@@ -37,7 +37,7 @@ public class JAXB2MarshallerTest extends BaseTest {
 	@Test
 	public void marshallTest() throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError {
 		Job job = new Job();
-		job.setId(1);
+		job.setSessionId(1);
 		job.setName("Test");
 		job.setDescription("Test Desc");
 		

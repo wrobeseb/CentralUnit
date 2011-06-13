@@ -43,14 +43,14 @@ public class JobProcessor {
 	private JobTaskResponseRepository jobTaskResponsRepository;
 	
 	public void launch(Job job) {
-		log.debug("Próba rozpoczêcia zadania id: {}.", new Object[] { job.getId() });
+		log.debug("Próba rozpoczêcia zadania id: {}.", new Object[] { job.getSessionId() });
 		try {
 			taskExecutor.execute(new JobWorker(job, scenerioService, defaultMessageSender, jobTaskResponsRepository));
 			jobRepository.put(job);
-			log.debug("Zadanie id: {} rozpoczête.", new Object[] { job.getId() });
+			log.debug("Zadanie id: {} rozpoczête.", new Object[] { job.getSessionId() });
 		}
 		catch(RejectedExecutionException reEx) {
-			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce zablokowanych.", new Object[] { job.getId() });
+			log.info("Kolejka przepelniona... zadanie id: {} zostaje umieszczone w kolejce zablokowanych.", new Object[] { job.getSessionId() });
 			blockedJobsRepository.put(job);
 			jmsConnectionManager.stopConsumingMessagesFromWorkflow();
 		}

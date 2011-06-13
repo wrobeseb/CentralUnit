@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 public class JobTask implements IXmlUtil {
 
 	private Integer id;
+	private Integer cuId;
 	private Integer sessionId;
 	private String sourceFilePath;
 	private String resultFilePath;
@@ -41,6 +42,15 @@ public class JobTask implements IXmlUtil {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@XmlTransient
+	public Integer getCuId() {
+		return cuId;
+	}
+
+	public void setCuId(Integer cuId) {
+		this.cuId = cuId;
 	}
 
 	@XmlElement(name="sessionId")

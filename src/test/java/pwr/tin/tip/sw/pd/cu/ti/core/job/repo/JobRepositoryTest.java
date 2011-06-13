@@ -12,7 +12,7 @@ public class JobRepositoryTest {
 		
 		final JobRepository jobRepository = new JobRepository();
 		final Job job = new Job();
-		job.setId(1);
+		job.setSessionId(1);
 		
 		new Thread(new Runnable() {
 			@Override

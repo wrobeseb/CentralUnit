@@ -1,5 +1,6 @@
 package pwr.tin.tip.sw.pd.cu.db.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,6 @@ public class DBJob {
 	private Integer idJob;
 	private Integer cuId;
 	private Integer sessionId;
-	private Integer msgId;
 	private String  requestMsgBody;
 	private Date    requestMsgArrivalDt;
 	private String  responseMsgBody;
@@ -29,6 +29,10 @@ public class DBJob {
 	public DBJob() {}
 	
 	public DBJob(Job job) {
+		cuId = job.getCuId();
+		sessionId = job.getSessionId();
+		requestMsgBody = job.getXml();
+		requestMsgArrivalDt = Calendar.getInstance().getTime();
 	}
 	
 	@Id
@@ -55,14 +59,6 @@ public class DBJob {
 	}
 	public void setSessionId(Integer sessionId) {
 		this.sessionId = sessionId;
-	}
-
-	@Column(name="msg_id")
-	public Integer getMsgId() {
-		return msgId;
-	}
-	public void setMsgId(Integer msgId) {
-		this.msgId = msgId;
 	}
 
 	@Column(name="request_msg_body")

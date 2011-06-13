@@ -44,7 +44,9 @@
     
     <bean id="esbMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
-		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
+		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/> 
+		<property name="maxConcurrentConsumers" value="50"/>
+		<property name="cacheLevelName" value="CACHE_SESSION"/>
     	<property name="destinationName" value="${esb.replay.queue}"/>
     	<property name="messageSelector" value="${msg.selector}"/>
     	<property name="messageListener">
@@ -59,6 +61,7 @@
     <bean id="workflowMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
     	<property name="connectionFactory" ref="jmsConnectionFactory"/>
 		<property name="maxMessagesPerTask" value="#{${thread.pool.max.tasks} + ${thread.pool.queue.capacity}}"/>
+		<property name="maxConcurrentConsumers" value="20"/>
     	<property name="destinationName" value="${cu.in.queue}"/>
     	<property name="messageSelector" value="${msg.selector}"/>
     	<property name="messageListener">
@@ -72,10 +75,11 @@
     
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
     	<constructor-arg ref="jmsConnectionFactory"/>
+    	<property name="deliveryMode" value="1"/>
     </bean>
 
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="${thread.pool.core.tasks}"/>
+		<property name="corePoolSize" value="${thread.pool.max.tasks}"/>
 		<property name="maxPoolSize" value="${thread.pool.max.tasks}"/>
 		<property name="queueCapacity" value="${thread.pool.queue.capacity}"/>
 	</bean>
@@ -105,7 +109,6 @@
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="defaultReadOnly" value="false"/>
         <property name="maxActive" value="${jdbc.max.active.connection}"/>
         <property name="maxOpenPreparedStatements" value="${jdbc.max.open.prepared.statements}"/>
     </bean>
@@ -117,6 +120,7 @@
             <value>pwr.tin.tip.sw.pd.cu.db.model.DBJob</value>
             <value>pwr.tin.tip.sw.pd.cu.db.model.DBJobTask</value>
             <value>pwr.tin.tip.sw.pd.cu.db.model.DBUnit</value>
+            <value>pwr.tin.tip.sw.pd.cu.db.model.DBStatistics</value>
           </list>
         </property>
         <property name="hibernateProperties">
